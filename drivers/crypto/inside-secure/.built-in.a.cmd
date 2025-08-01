@@ -1,0 +1,1 @@
+savedcmd_drivers/crypto/inside-secure/built-in.a := rm -f drivers/crypto/inside-secure/built-in.a;  printf "drivers/crypto/inside-secure/%s " eip93/built-in.a | xargs ar cDPrST drivers/crypto/inside-secure/built-in.a

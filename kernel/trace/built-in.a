@@ -1,0 +1,53 @@
+!<thin>
+//                                              402       `
+trace_clock.o/
+ring_buffer.o/
+trace.o/
+trace_output.o/
+trace_seq.o/
+trace_stat.o/
+trace_printk.o/
+pid_list.o/
+trace_sched_switch.o/
+trace_nop.o/
+blktrace.o/
+trace_events.o/
+trace_export.o/
+trace_event_perf.o/
+trace_events_filter.o/
+trace_events_trigger.o/
+trace_eprobe.o/
+trace_kprobe.o/
+error_report-traces.o/
+power-traces.o/
+rpm-traces.o/
+trace_dynevent.o/
+trace_probe.o/
+trace_uprobe.o/
+rethook.o/
+
+/0              0           0     0     644     4328      `
+/15             0           0     0     644     86256     `
+/30             0           0     0     644     246040    `
+/39             0           0     0     644     42864     `
+/55             0           0     0     644     9280      `
+/68             0           0     0     644     7864      `
+/82             0           0     0     644     11072     `
+/98             0           0     0     644     6872      `
+/110            0           0     0     644     18456     `
+/132            0           0     0     644     3056      `
+/145            0           0     0     644     48960     `
+/157            0           0     0     644     89552     `
+/173            0           0     0     644     23464     `
+/189            0           0     0     644     10768     `
+/209            0           0     0     644     30456     `
+/232            0           0     0     644     33408     `
+/256            0           0     0     644     25568     `
+/272            0           0     0     644     49136     `
+/288            0           0     0     644     9384      `
+/311            0           0     0     644     80384     `
+/327            0           0     0     644     24904     `
+/341            0           0     0     644     12880     `
+/359            0           0     0     644     40808     `
+/374            0           0     0     644     36320     `
+/390            0           0     0     644     8744      `

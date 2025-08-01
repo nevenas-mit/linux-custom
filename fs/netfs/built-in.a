@@ -1,0 +1,36 @@
+!<thin>
+//                                              242       `
+buffered_read.o/
+buffered_write.o/
+direct_read.o/
+direct_write.o/
+iterator.o/
+locking.o/
+main.o/
+misc.o/
+objects.o/
+read_collect.o/
+read_pgpriv2.o/
+read_retry.o/
+read_single.o/
+rolling_buffer.o/
+write_collect.o/
+write_issue.o/
+write_retry.o/
+/0              0           0     0     644     19128     `
+/17             0           0     0     644     17768     `
+/35             0           0     0     644     7904      `
+/50             0           0     0     644     5728      `
+/66             0           0     0     644     6536      `
+/78             0           0     0     644     5192      `
+/89            /0           0     0     644     139504    `
+/97            /0           0     0     644     18384     `
+/105            0           0     0     644     11904     `
+/116            0           0     0     644     24464     `
+/132            0           0     0     644     8304      `
+/148            0           0     0     644     8776      `
+/162            0           0     0     644     7000      `
+/177            0           0     0     644     9512      `
+/195            0           0     0     644     20128     `
+/212            0           0     0     644     21656     `
+/227            0           0     0     644     7504      `

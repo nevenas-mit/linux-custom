@@ -1,0 +1,61 @@
+!<thin>
+//                                              422       `
+hid-core.o/
+hid-input.o/
+hid-quirks.o/
+hid-debug.o/
+hidraw.o/
+hid-generic.o/
+hid-a4tech.o/
+hid-apple.o/
+hid-belkin.o/
+hid-cherry.o/
+hid-chicony.o/
+hid-cypress.o/
+hid-ezkey.o/
+hid-gyration.o/
+hid-ite.o/
+hid-kensington.o/
+hid-microsoft.o/
+hid-monterey.o/
+hid-ntrig.o/
+hid-pl.o/
+hid-petalynx.o/
+hid-redragon.o/
+hid-samsung.o/
+hid-sony.o/
+hid-sunplus.o/
+hid-topseed.o/
+usbhid/hid-core.o/
+usbhid/hiddev.o/
+usbhid/hid-pidff.o/
+
+/0              0           0     0     644     53688     `
+/12             0           0     0     644     37968     `
+/25             0           0     0     644     22840     `
+/39             0           0     0     644     215504    `
+/52             0           0     0     644     16952     `
+/62             0           0     0     644     4936      `
+/77             0           0     0     644     6152      `
+/91             0           0     0     644     22168     `
+/104            0           0     0     644     6040      `
+/118            0           0     0     644     5824      `
+/132            0           0     0     644     10488     `
+/147            0           0     0     644     6032      `
+/162            0           0     0     644     5608      `
+/175            0           0     0     644     8056      `
+/191            0           0     0     644     6856      `
+/202            0           0     0     644     4992      `
+/220            0           0     0     644     12792     `
+/237            0           0     0     644     5968      `
+/253            0           0     0     644     21696     `
+/266            0           0     0     644     6440      `
+/276            0           0     0     644     7376      `
+/292            0           0     0     644     4424      `
+/308            0           0     0     644     23600     `
+/323            0           0     0     644     30568     `
+/335            0           0     0     644     5496      `
+/350            0           0     0     644     9728      `
+/365            0           0     0     644     37120     `
+/384            0           0     0     644     15624     `
+/401            0           0     0     644     19120     `

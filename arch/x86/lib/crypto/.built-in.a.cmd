@@ -1,0 +1,1 @@
+savedcmd_arch/x86/lib/crypto/built-in.a := rm -f arch/x86/lib/crypto/built-in.a;  printf "arch/x86/lib/crypto/%s " sha256.o sha256-ssse3-asm.o sha256-avx-asm.o sha256-avx2-asm.o sha256-ni-asm.o | xargs ar cDPrST arch/x86/lib/crypto/built-in.a

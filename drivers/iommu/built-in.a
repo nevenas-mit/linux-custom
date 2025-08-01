@@ -1,0 +1,51 @@
+!<thin>
+//                                              340       `
+amd/iommu.o/
+amd/init.o/
+amd/quirks.o/
+amd/io_pgtable.o/
+amd/io_pgtable_v2.o/
+amd/ppr.o/
+amd/pasid.o/
+intel/iommu.o/
+intel/pasid.o/
+intel/nested.o/
+intel/cache.o/
+intel/prq.o/
+intel/dmar.o/
+intel/trace.o/
+intel/perfmon.o/
+iommu.o/
+iommu-pages.o/
+iommu-traces.o/
+iommu-sysfs.o/
+dma-iommu.o/
+io-pgtable.o/
+iova.o/
+iommu-sva.o/
+io-pgfault.o/
+
+/0              0           0     0     644     47368     `
+/13             0           0     0     644     64296     `
+/25             0           0     0     644     4336      `
+/39             0           0     0     644     10552     `
+/57             0           0     0     644     6016      `
+/78             0           0     0     644     6360      `
+/89             0           0     0     644     4640      `
+/102            0           0     0     644     87208     `
+/117            0           0     0     644     24256     `
+/132            0           0     0     644     8208      `
+/148            0           0     0     644     14496     `
+/163            0           0     0     644     10400     `
+/176            0           0     0     644     55304     `
+/190            0           0     0     644     29448     `
+/205            0           0     0     644     35144     `
+/222            0           0     0     644     75944     `
+/231            0           0     0     644     5472      `
+/246            0           0     0     644     29112     `
+/262            0           0     0     644     5752      `
+/277            0           0     0     644     38208     `
+/290            0           0     0     644     3224      `
+/304            0           0     0     644     18032     `
+/312            0           0     0     644     7432      `
+/325            0           0     0     644     11752     `

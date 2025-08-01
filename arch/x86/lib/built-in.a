@@ -1,0 +1,33 @@
+!<thin>
+//                                              240       `
+crypto/sha256.o/
+crypto/sha256-ssse3-asm.o/
+crypto/sha256-avx-asm.o/
+crypto/sha256-avx2-asm.o/
+crypto/sha256-ni-asm.o/
+msr-smp.o/
+cache-smp.o/
+crc32.o/
+crc32-pclmul.o/
+crc32c-3way.o/
+msr.o/
+msr-reg.o/
+msr-reg-export.o/
+hweight.o/
+iomem.o/
+
+/0              0           0     0     644     6552      `
+/17             0           0     0     644     5616      `
+/44             0           0     0     644     5552      `
+/69             0           0     0     644     7200      `
+/95             0           0     0     644     2384      `
+/119            0           0     0     644     11648     `
+/130            0           0     0     644     2552      `
+/143            0           0     0     644     8016      `
+/152            0           0     0     644     3496      `
+/168            0           0     0     644     2368      `
+/183            0           0     0     644     17712     `
+/190            0           0     0     644     1336      `
+/201            0           0     0     644     1688      `
+/219            0           0     0     644     1584      `
+/230            0           0     0     644     2600      `

@@ -1,0 +1,24 @@
+!<thin>
+//                                              204       `
+cpufreq.o/
+freq_table.o/
+cpufreq_performance.o/
+cpufreq_userspace.o/
+cpufreq_ondemand.o/
+cpufreq_governor.o/
+cpufreq_governor_attr_set.o/
+acpi-cpufreq.o/
+amd-pstate.o/
+amd-pstate-trace.o/
+intel_pstate.o/
+/0              0           0     0     644     72840     `
+/11             0           0     0     644     6920      `
+/25             0           0     0     644     3912      `
+/48             0           0     0     644     6736      `
+/69             0           0     0     644     16232     `
+/89             0           0     0     644     12976     `
+/109            0           0     0     644     4152      `
+/138            0           0     0     644     24416     `
+/154            0           0     0     644     47296     `
+/168            0           0     0     644     12720     `
+/188            0           0     0     644     78744     `

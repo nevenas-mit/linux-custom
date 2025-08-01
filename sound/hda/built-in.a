@@ -1,0 +1,33 @@
+!<thin>
+//                                              222       `
+hda_bus_type.o/
+hdac_bus.o/
+hdac_device.o/
+hdac_sysfs.o/
+hdac_regmap.o/
+hdac_controller.o/
+hdac_stream.o/
+array.o/
+hdmi_chmap.o/
+trace.o/
+hdac_component.o/
+hdac_i915.o/
+intel-dsp-config.o/
+intel-nhlt.o/
+intel-sdw-acpi.o/
+
+/0              0           0     0     644     5160      `
+/16             0           0     0     644     10616     `
+/28             0           0     0     644     23480     `
+/43             0           0     0     644     16768     `
+/57             0           0     0     644     11280     `
+/72             0           0     0     644     14552     `
+/91             0           0     0     644     18688     `
+/106            0           0     0     644     2552      `
+/115            0           0     0     644     18168     `
+/129            0           0     0     644     19800     `
+/138            0           0     0     644     9880      `
+/156            0           0     0     644     6176      `
+/169            0           0     0     644     4200      `
+/189            0           0     0     644     7152      `
+/203            0           0     0     644     6768      `

@@ -1,0 +1,1 @@
+cmd_/mydata/linux/tools/objtool/arch/x86/objtool-in.o :=  ld -r -o /mydata/linux/tools/objtool/arch/x86/objtool-in.o  /mydata/linux/tools/objtool/arch/x86/special.o /mydata/linux/tools/objtool/arch/x86/decode.o /mydata/linux/tools/objtool/arch/x86/orc.o
