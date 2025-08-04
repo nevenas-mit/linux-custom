@@ -9,6 +9,11 @@
 
 #include <linux/mmzone.h>  // for struct zone
 #include <linux/gfp.h>
+#include <linux/bitfield.h>
+
+#define PUD_ORDER_SHIFT  55
+#define PUD_ORDER_BITS   4
+#define PUD_ORDER_MASK   GENMASK_ULL(PUD_ORDER_SHIFT + PUD_ORDER_BITS - 1, PUD_ORDER_SHIFT)
 
 
 /**
