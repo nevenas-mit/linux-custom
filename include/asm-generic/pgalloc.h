@@ -121,6 +121,19 @@ static inline void pte_free(struct mm_struct *mm, struct page *pte_page)
     pagetable_dtor_free(ptdesc);
 }
 
+// Encode order into pud_t
+static inline pud_t pud_set_pmd_order(pud_t pud, unsigned int order)
+{
+    pud_val(pud) &= ~PUD_PMD_ORDER_MASK;  // Clear previous
+    pud_val(pud) |= ((unsigned long)order << PUD_PMD_ORDER_SHIFT);
+    return pud;
+}
+
+// Decode order from pud_t
+static inline unsigned int pud_get_pmd_order(pud_t pud)
+{
+    return (pud_val(pud) & PUD_PMD_ORDER_MASK) >> PUD_PMD_ORDER_SHIFT;
+}
 
 #if CONFIG_PGTABLE_LEVELS > 2
 
@@ -220,6 +233,21 @@ static inline pmd_t *pmd_alloc_one_noprof(struct mm_struct *mm, unsigned long ad
         pagetable_free(ptdesc);
         return NULL;
     }
+    
+    pgd_t *pgd = pgd_offset(mm, addr);
+    if (pgd_none(*pgd) || pgd_bad(*pgd))
+	    return NULL;
+    
+    p4d_t *p4d = p4d_offset(pgd, addr);
+    if (p4d_none(*p4d) || p4d_bad(*p4d))
+	    return NULL;
+    
+    pud_t *pud = pud_offset(p4d, addr);
+    if (pud_none(*pud) || pud_bad(*pud))
+	    return NULL;
+    
+    // Store the order bits in the PUD entry
+    *pud = pud_set_pmd_order(*pud, order);
 
     return ptdesc_address(ptdesc);
 }
