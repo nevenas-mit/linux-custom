@@ -11,9 +11,9 @@
 #include <linux/gfp.h>
 #include <linux/bitfield.h>
 
-#define PUD_ORDER_SHIFT  55
-#define PUD_ORDER_BITS   4
-#define PUD_ORDER_MASK   GENMASK_ULL(PUD_ORDER_SHIFT + PUD_ORDER_BITS - 1, PUD_ORDER_SHIFT)
+#define PUD_PMD_ORDER_SHIFT  55
+#define PUD_PMD_ORDER_BITS   4
+#define PUD_PMD_ORDER_MASK   GENMASK_ULL(PUD_PMD_ORDER_SHIFT + PUD_PMD_ORDER_BITS - 1, PUD_PMD_ORDER_SHIFT)
 
 
 /**
@@ -129,15 +129,18 @@ static inline void pte_free(struct mm_struct *mm, struct page *pte_page)
 // Encode order into pud_t
 static inline pud_t pud_set_pmd_order(pud_t pud, unsigned int order)
 {
-    pud_val(pud) &= ~PUD_PMD_ORDER_MASK;  // Clear previous
-    pud_val(pud) |= ((unsigned long)order << PUD_PMD_ORDER_SHIFT);
-    return pud;
+    unsigned long v = pud_val(pud);
+
+    v &= ~PUD_PMD_ORDER_MASK;
+    v |= FIELD_PREP(PUD_PMD_ORDER_MASK, (unsigned long)order); // from <linux/bitfield.h>
+
+    return __pud(v);
 }
 
 // Decode order from pud_t
 static inline unsigned int pud_get_pmd_order(pud_t pud)
 {
-    return (pud_val(pud) & PUD_PMD_ORDER_MASK) >> PUD_PMD_ORDER_SHIFT;
+    return (unsigned int)FIELD_GET(PUD_PMD_ORDER_MASK, pud_val(pud));
 }
 
 #if CONFIG_PGTABLE_LEVELS > 2
@@ -238,7 +241,14 @@ static inline pmd_t *pmd_alloc_one_noprof(struct mm_struct *mm, unsigned long ad
         pagetable_free(ptdesc);
         return NULL;
     }
+
+    {
+        struct page *ptpage = ptdesc_page(ptdesc);
+        set_page_private(ptpage, order);
+    }
     
+    /*
+    COMMENT OUT -- NO NEED FOR WALKING THE PAGE TABLE, STORE PMD ORDER IN A METADATA
     pgd_t *pgd = pgd_offset(mm, addr);
     if (pgd_none(*pgd) || pgd_bad(*pgd))
 	    return NULL;
@@ -253,6 +263,7 @@ static inline pmd_t *pmd_alloc_one_noprof(struct mm_struct *mm, unsigned long ad
     
     // Store the order bits in the PUD entry
     *pud = pud_set_pmd_order(*pud, order);
+    */
 
     return ptdesc_address(ptdesc);
 }
