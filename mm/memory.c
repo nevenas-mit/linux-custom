@@ -38,7 +38,7 @@
  *
  * Aug/Sep 2004 Changed to four level page tables (Andi Kleen)
  */
-
+#include <linux/printk.h>
 #include <linux/kernel_stat.h>
 #include <linux/mm.h>
 #include <linux/mm_inline.h>
@@ -88,6 +88,7 @@
 #include "pgalloc-track.h"
 #include "internal.h"
 #include "swap.h"
+#include <linux/xarray.h>
 
 #if defined(LAST_CPUPID_NOT_IN_PAGE_FLAGS) && !defined(CONFIG_COMPILE_TEST)
 #warning Unfortunate NUMA and NUMA Balancing config, growing page-frame for last_cpupid.
@@ -96,6 +97,39 @@
 static vm_fault_t do_fault(struct vm_fault *vmf);
 static vm_fault_t do_anonymous_page(struct vm_fault *vmf);
 static bool vmf_pte_changed(struct vm_fault *vmf);
+
+#define PMD_ORDER_MAP_SIZE 1024  /* tune as needed */
+
+struct pmd_order_entry {
+    pid_t pid;
+    unsigned long vaddr;
+    unsigned int order;
+};
+
+static struct pmd_order_entry pmd_order_map[PMD_ORDER_MAP_SIZE];
+
+static inline unsigned long pmd_order_hash(pid_t pid, unsigned long vaddr)
+{
+    return ((unsigned long)pid ^ (vaddr >> PMD_SHIFT)) % PMD_ORDER_MAP_SIZE;
+}
+
+void pmd_order_set(pid_t pid, unsigned long vaddr, unsigned int order)
+{
+    unsigned long h = pmd_order_hash(pid, vaddr);
+    pmd_order_map[h].pid   = pid;
+    pmd_order_map[h].vaddr = vaddr >> PMD_SHIFT;
+    pmd_order_map[h].order = order;
+}
+
+unsigned int pmd_order_get(pid_t pid, unsigned long vaddr)
+{
+    unsigned long h = pmd_order_hash(pid, vaddr);
+    if (pmd_order_map[h].pid == pid &&
+        pmd_order_map[h].vaddr == (vaddr >> PMD_SHIFT))
+        return pmd_order_map[h].order;
+    return 0; /* default */
+}
+
 
 /*
  * Return true if the original pte was a uffd-wp pte marker (so the pte was
@@ -6448,6 +6482,7 @@ int __pmd_alloc(struct mm_struct *mm, pud_t *pud, unsigned long address)
 {
 	spinlock_t *ptl;
 	pmd_t *new = pmd_alloc_one(mm, address);
+	pr_info("__pmd_alloc(): addr=%lx, new=%p\n", address, new);
 	if (!new)
 		return -ENOMEM;
 
@@ -6457,8 +6492,19 @@ int __pmd_alloc(struct mm_struct *mm, pud_t *pud, unsigned long address)
 		smp_wmb(); /* See comment in pmd_install() */
 		pud_populate(mm, pud, new);
 
-		unsigned int order = (unsigned int)page_private(virt_to_page(new));
+		// unsigned int order = (unsigned int)page_private(virt_to_page(new));
 
+		/*
+		struct ptdesc *ptd = virt_to_ptdesc(new);
+		struct page *ptpage = ptdesc_page(ptd);
+		unsigned int order = pmd_order_get(ptpage);
+		pmd_order_del(ptpage);
+		*/
+		
+		unsigned int order = pmd_order_get(current->pid, address);
+		pr_info("__pmd_alloc(): pid=%d addr=%lx order=%u\n", current->pid, address, order);
+		
+		pr_info("__pmd_alloc(): order=%u\n", order);
 		/* Read current entry*/
 		{
 			pud_t e = READ_ONCE(*pud);

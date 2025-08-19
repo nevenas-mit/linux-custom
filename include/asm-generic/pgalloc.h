@@ -1,7 +1,8 @@
 /* SPDX-License-Identifier: GPL-2.0 */
 #ifndef __ASM_GENERIC_PGALLOC_H
 #define __ASM_GENERIC_PGALLOC_H
-
+#include <linux/printk.h>
+#include <linux/sched.h>
 #ifdef CONFIG_MMU
 
 #define GFP_PGTABLE_KERNEL  (GFP_KERNEL | __GFP_ZERO)
@@ -14,6 +15,10 @@
 #define PUD_PMD_ORDER_SHIFT  55
 #define PUD_PMD_ORDER_BITS   4
 #define PUD_PMD_ORDER_MASK   GENMASK_ULL(PUD_PMD_ORDER_SHIFT + PUD_PMD_ORDER_BITS - 1, PUD_PMD_ORDER_SHIFT)
+
+extern void pmd_order_set(pid_t pid, unsigned long addr, unsigned int order);
+extern unsigned int pmd_order_get(pid_t pid, unsigned long addr);
+extern void pmd_order_del(pid_t pid, unsigned long addr);
 
 
 /**
@@ -197,10 +202,17 @@ static inline pmd_t *pmd_alloc_one_noprof(struct mm_struct *mm, unsigned long ad
     extern int pagetable_alloc_mode;       // 0 = fixed, 1 = dynamic
     extern int pagetable_fixed_order;      // used in fixed mode only
 
+
+    pr_info("PMD_ALLOC: enter addr=%lx pid=%d (%s)\n",
+            addr, current->pid, current->comm);
+
+
     int nid = numa_node_id();  // current NUMA node
     struct zonelist *zonelist = node_zonelist(nid, gfp);
     int largest_order = get_largest_available_order(zonelist, gfp);
     // int largest_order = get_largest_available_order(mm->mmu_notifier_mm->zonelist, gfp);
+    pr_info("PMD_ALLOC: nid=%d gfp=%pGg largest_order=%d mode=%d fixed_order=%d\n",
+            nid, &gfp, largest_order, pagetable_alloc_mode, pagetable_fixed_order);
 
     if (pagetable_alloc_mode == 0) {
         // Fixed order mode
@@ -224,6 +236,7 @@ static inline pmd_t *pmd_alloc_one_noprof(struct mm_struct *mm, unsigned long ad
     } else {
         // Dynamic fallback mode: try largest to smallest
         ptdesc = pagetable_alloc_noprof(gfp, largest_order);
+        order = largest_order;
 #if defined(CONFIG_CONTIGUOUS_PAGETABLE_DEBUG)
         if (ptdesc)
             atomic_long_inc(&pagetable_alloc_success[largest_order]);
@@ -231,9 +244,15 @@ static inline pmd_t *pmd_alloc_one_noprof(struct mm_struct *mm, unsigned long ad
             atomic_long_inc(&pagetable_alloc_fail[largest_order]);
 #endif
         if (!ptdesc){
-		ptdesc = pagetable_alloc_noprof(gfp, 0);
-	}
+		    ptdesc = pagetable_alloc_noprof(gfp, 0);
+	    }
     }
+
+    // struct page *head = ptdesc_page(ptdesc);
+    /* Turn the compound allocation into order-0 pages right away */
+    // split_page(head, order);      // now each 4K is a normal page
+    /* Use the head page as the PT page */
+    // ptdesc = virt_to_ptdesc(page_address(head));
 
     if (!ptdesc)
         return NULL;
@@ -242,11 +261,22 @@ static inline pmd_t *pmd_alloc_one_noprof(struct mm_struct *mm, unsigned long ad
         return NULL;
     }
 
-    {
-        struct page *ptpage = ptdesc_page(ptdesc);
-        set_page_private(ptpage, order);
+    pr_info("PMD_ALLOC: correct order=%d\n", order);
+    pmd_order_set(current->pid, addr, order);
+
+    {   
+        // order = 0;
+        //struct page *ptpage = ptdesc_page(ptdesc);
+        //set_page_private(ptpage, order);
+        
+        // struct page *ptpage = ptdesc_page(ptdesc);
+        // pmd_order_set(ptpage, order);
+        // pr_info("PMD_ALLOC: chose order=%u for ptpage=%pK\n", order, ptpage);
     }
-    
+
+    return ptdesc_address(ptdesc);
+}
+
     /*
     COMMENT OUT -- NO NEED FOR WALKING THE PAGE TABLE, STORE PMD ORDER IN A METADATA
     pgd_t *pgd = pgd_offset(mm, addr);
@@ -264,9 +294,6 @@ static inline pmd_t *pmd_alloc_one_noprof(struct mm_struct *mm, unsigned long ad
     // Store the order bits in the PUD entry
     *pud = pud_set_pmd_order(*pud, order);
     */
-
-    return ptdesc_address(ptdesc);
-}
 
 #define pmd_alloc_one(...)  alloc_hooks(pmd_alloc_one_noprof(__VA_ARGS__))
 #endif
