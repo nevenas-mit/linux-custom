@@ -146,4 +146,15 @@ Distinct first-2-digit prefixes: 4
 36 : 12052 --> 0.03%
 43 : 1196 --> 0.00%
 total = 38965742
+
+PageRank
+=== PMD prefix stats ===
+Distinct first-2-digit prefixes: 4
+48 : 69217020 --> 99.66%
+2a : 201208 --> 0.29%
+36 : 32448 --> 0.05%
+43 : 2285 --> 0.00%
+total = 69452961
+
+
 '''
